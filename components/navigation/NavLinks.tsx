@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { SheetClose } from "@/components/ui/sheet";
 import { sidebarLinks } from "@/constants";
@@ -6,11 +6,12 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
+import React from "react";
 
 const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
-    const pathname = usePathname();
-    const userId = 1;
+  const pathname = usePathname();
+  const userId = 1;
+
   return (
     <>
       {sidebarLinks.map((item) => {
@@ -64,4 +65,4 @@ const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
   );
 };
 
-export default NavLinks
+export default NavLinks;
