@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
 import QuestionCard from "@/components/cards/QuestionCard";
 
+
 const questions = [
   {
     _id: "1",
@@ -40,6 +41,8 @@ const questions = [
     createdAt: new Date(),
   },
 ];
+
+
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
