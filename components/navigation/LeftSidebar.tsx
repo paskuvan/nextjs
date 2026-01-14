@@ -4,7 +4,8 @@ import ROUTES from "@/constants/routes";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import Image from "next/image";
-import { auth } from "@/auth"
+import { auth, signOut } from "@/auth"
+import { LogOut } from "lucide-react";
 
 const LeftSidebar = async () => {
   const session = await auth();

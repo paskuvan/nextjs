@@ -12,7 +12,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import ROUTES from "@/constants/routes"
-import { auth } from "@/auth"
+import { auth, signOut } from "@/auth"
+import { LogOut } from "lucide-react"
 
 const MobileNavigation = async () => {
   const session = await auth();

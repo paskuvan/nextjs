@@ -5,6 +5,7 @@ import React from 'react'
 import Theme from './Theme'
 import MobileNavigation from './MobileNavigation';
 import { auth } from '@/auth';
+import UserAvatar from '../UserAvatar';
 
 
 const Navbar = async () => {
