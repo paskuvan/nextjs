@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import ROUTES from "@/constants/routes";
+import { Toaster } from "@/components/ui/sonner"
 
 interface AuthFormProps<T extends FieldValues> {
   schema: ZodType<T>;
@@ -41,9 +42,28 @@ const AuthForm = <T extends FieldValues>({
     defaultValues: defaultValues as DefaultValues<T>,
   });
 
-  const handleSubmit: SubmitHandler<T> = async () => {
-    // TODO: Authenticate User
+  const handleSubmit: SubmitHandler<T> = async (data) => {
+    const result = (await onSubmit(data)) as ActionResponse;
+
+    if (result?.success) {
+      Toaster({
+        title: "Success",
+        description:
+          formType === "SIGN_IN"
+            ? "Signed in successfully"
+            : "Signed up successfully",
+      });
+
+      router.push(ROUTES.HOME);
+    } else {
+      toast({
+        title: `Error ${result?.status}`,
+        description: result?.error?.message,
+        variant: "destructive",
+      });
+    }
   };
+
 
   const buttonText = formType === "SIGN_IN" ? "Sign In" : "Sign Up";
 
