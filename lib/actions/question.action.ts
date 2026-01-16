@@ -1,9 +1,8 @@
 "use server";
 
-import mongoose from "mongoose";
-import { FilterQuery } from "mongoose";
+import mongoose, { Error, FilterQuery } from "mongoose";
 
-import Question from "@/database/question.model";
+import Question, { IQuestionDoc } from "@/database/question.model";
 import TagQuestion from "@/database/tag.question.model";
 import Tag, { ITagDoc } from "@/database/tag.model";
 
@@ -15,15 +14,6 @@ import {
   GetQuestionSchema,
   PaginatedSearchParamsSchema,
 } from "../validations";
-import type {
-  CreateQuestionParams,
-  EditQuestionParams,
-  GetQuestionParams,
-  PaginatedSearchParams,
-  ActionResponse,
-  ErrorResponse,
-  IQuestionDoc,
-} from "@/types";
 
 export async function createQuestion(
   params: CreateQuestionParams
@@ -213,7 +203,9 @@ export async function getQuestion(
   const { questionId } = validationResult.params!;
 
   try {
-    const question = await Question.findById(questionId).populate("tags");
+    const question = await Question.findById(questionId)
+      .populate("tags")
+      .populate("author", "_id name image");
 
     if (!question) {
       throw new Error("Question not found");
