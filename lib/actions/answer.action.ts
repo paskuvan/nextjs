@@ -9,7 +9,7 @@ import Answer, { IAnswerDoc } from "@/database/answer.model";
 
 import action from "../handlers/action";
 import handleError from "../handlers/error";
-import { AnswerServerSchema } from "../validations";
+import { AnswerServerSchema, GetAnswersSchema } from "../validations";
 
 export async function createAnswer(
   params: CreateAnswerParams
