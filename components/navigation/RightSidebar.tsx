@@ -59,16 +59,16 @@ const RightSidebar = async () => {
         <h3 className="h3-bold text-dark200_light900">Popular Tags</h3>
 
         <DataRenderer
-          data={tags}
+          data={tags?.tags}
           empty={{
             title: "No tags found",
             message: "No tags have been created yet.",
           }}
           success={tagSuccess}
           error={tagError}
-          render={(tags) => (
+          render={(tagsArray) => (
             <div className="mt-7 flex flex-col gap-4">
-              {tags.map(({ _id, name, questions }) => (
+              {tagsArray.map(({ _id, name, questions }) => (
                 <TagCard
                   key={_id}
                   _id={_id}
