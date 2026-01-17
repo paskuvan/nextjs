@@ -37,7 +37,7 @@ const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
     questionId: id,
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
-    filter: filter || "latest",
+    filter,
   });
 
   const hasVotedPromise = hasVoted({
@@ -59,7 +59,7 @@ const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
             <UserAvatar
               id={author._id}
               name={author.name}
-              className="size-5.5"
+              className="size-[22px]"
               fallbackClassName="text-[10px]"
             />
             <Link href={ROUTES.PROFILE(author._id)}>
@@ -133,6 +133,8 @@ const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
 
       <section className="my-5">
         <AllAnswers
+          page={Number(page) || 1}
+          isNext={answersResult?.isNext || false}
           data={answersResult?.answers}
           success={areAnswersLoaded}
           error={answersError}
