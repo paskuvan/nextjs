@@ -1,26 +1,33 @@
+import React from "react";
+
 import QuestionCard from "@/components/cards/QuestionCard";
 import DataRenderer from "@/components/DataRenderer";
 import CommonFilter from "@/components/filters/CommonFilter";
-import Pagination from "@/components/Pagination";
+//import Pagination from "@/components/Pagination";
 import LocalSearch from "@/components/search/LocalSearch";
-import { CollectionFilters } from "@/constants/filters";
+import { CollectionFilters } from "@/constants/filters"
 import ROUTES from "@/constants/routes";
-import { EMPTY_QUESTION } from "@/constants/states";
+import { EMPTY_COLLECTIONS } from "@/constants/states";
 import { getSavedQuestions } from "@/lib/actions/collection.action";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
-interface SearchParams {
-  searchParams: Promise<{ [key: string]: string }>;
-}
-
-const Collections = async ({ searchParams }: SearchParams) => {
+const CollectionPage = async ({ searchParams }: RouteParams) => {
   const { page, pageSize, query, filter } = await searchParams;
 
   const { success, data, error } = await getSavedQuestions({
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
-    query: query || "",
-    filter: filter || "",
+    query,
+    filter,
   });
+
+
+  const loggedInUser = await auth();
+
+  if(!loggedInUser) {
+    redirect(ROUTES.SIGN_IN);
+  }
 
   const { collection, isNext } = data || {};
 
@@ -31,8 +38,9 @@ const Collections = async ({ searchParams }: SearchParams) => {
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearch
           route={ROUTES.COLLECTION}
+          iconPosition="left"
           imgSrc="/icons/search.svg"
-          placeholder="Search questions..."
+          placeholder="Search amazing minds here..."
           otherClasses="flex-1"
         />
 
@@ -46,7 +54,7 @@ const Collections = async ({ searchParams }: SearchParams) => {
         success={success}
         error={error}
         data={collection}
-        empty={EMPTY_QUESTION}
+        empty={EMPTY_COLLECTIONS}
         render={(collection) => (
           <div className="mt-10 flex w-full flex-col gap-6">
             {collection.map((item) => (
@@ -56,9 +64,13 @@ const Collections = async ({ searchParams }: SearchParams) => {
         )}
       />
 
-      <Pagination page={page} isNext={isNext || false} />
+      {/* <Pagination
+        page={page}
+        isNext={isNext || false}
+        containerClasses="mt-10"
+      /> */}
     </>
   );
 };
 
-export default Collections;
+export default CollectionPage;

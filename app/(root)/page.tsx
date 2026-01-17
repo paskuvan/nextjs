@@ -4,7 +4,6 @@ import QuestionCard from "@/components/cards/QuestionCard";
 import DataRenderer from "@/components/DataRenderer";
 import CommonFilter from "@/components/filters/CommonFilter";
 import HomeFilter from "@/components/filters/HomeFilter";
-import Pagination from "@/components/Pagination";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
@@ -26,7 +25,7 @@ const Home = async ({ searchParams }: SearchParams) => {
     filter: filter || "",
   });
 
-  const { questions, isNext } = data || {};
+  const { questions } = data || {};
 
   return (
     <>
@@ -34,7 +33,7 @@ const Home = async ({ searchParams }: SearchParams) => {
         <h1 className="h1-bold text-dark100_light900">All Questions</h1>
 
         <Button
-          className="primary-gradient min-h-[46px] px-4 py-3 !text-light-900"
+          className="primary-gradient min-h-11.5 px-4 py-3 text-light-900"
           asChild
         >
           <Link href={ROUTES.ASK_QUESTION}>Ask a Question</Link>
@@ -69,8 +68,6 @@ const Home = async ({ searchParams }: SearchParams) => {
           </div>
         )}
       />
-
-      <Pagination page={page} isNext={isNext || false} />
     </>
   );
 };
