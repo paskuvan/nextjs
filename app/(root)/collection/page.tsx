@@ -64,11 +64,11 @@ const CollectionPage = async ({ searchParams }: RouteParams) => {
         )}
       />
 
-      <Pagination
+      {/* <Pagination
         page={page}
         isNext={isNext || false}
         containerClasses="mt-10"
-      />
+      /> */}
     </>
   );
 };

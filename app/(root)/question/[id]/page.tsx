@@ -18,8 +18,9 @@ import { getQuestion, incrementViews } from "@/lib/actions/question.action";
 import { hasVoted } from "@/lib/actions/vote.action";
 import { formatNumber, getTimeStamp } from "@/lib/utils";
 
-const QuestionDetails = async ({ params }: RouteParams) => {
+const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
   const { id } = await params;
+  const { page, pageSize, filter } = await searchParams;
   const { success, data: question } = await getQuestion({ questionId: id });
 
   after(async () => {
@@ -34,9 +35,9 @@ const QuestionDetails = async ({ params }: RouteParams) => {
     error: answersError,
   } = await getAnswers({
     questionId: id,
-    page: 1,
-    pageSize: 10,
-    filter: "latest",
+    page: Number(page) || 1,
+    pageSize: Number(pageSize) || 10,
+    filter: filter || "latest",
   });
 
   const hasVotedPromise = hasVoted({
@@ -58,7 +59,7 @@ const QuestionDetails = async ({ params }: RouteParams) => {
             <UserAvatar
               id={author._id}
               name={author.name}
-              className="size-[22px]"
+              className="size-5.5"
               fallbackClassName="text-[10px]"
             />
             <Link href={ROUTES.PROFILE(author._id)}>
