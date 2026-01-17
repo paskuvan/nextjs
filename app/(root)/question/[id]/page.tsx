@@ -35,7 +35,10 @@ const QuestionDetails = async ({ params }: RouteParams) => {
     filter: "latest",
   });
 
-  console.log("ANSWERS", answersResult);
+  const hasVotedPromise = hasVoted({
+    targetId: question._id,
+    targetType: "question",
+  });
 
   const { author, createdAt, answers, views, tags, content, title } = question;
 
@@ -58,7 +61,15 @@ const QuestionDetails = async ({ params }: RouteParams) => {
           </div>
 
           <div className="flex justify-end">
-            <Votes upvotes={question.upvotes} hasUpvoted={true} downVotes={question.downVotes} hasdownVoted={false} />
+            <Suspense fallback={<div>Loading...</div>}>
+              <Votes
+                targetType="question"
+                upvotes={question.upvotes}
+                downvotes={question.downvotes}
+                targetId={question._id}
+                hasVotedPromise={hasVotedPromise}
+              />
+            </Suspense>
           </div>
         </div>
 
@@ -104,7 +115,7 @@ const QuestionDetails = async ({ params }: RouteParams) => {
         ))}
       </div>
 
-         <section className="my-5">
+      <section className="my-5">
         <AllAnswers
           data={answersResult?.answers}
           success={areAnswersLoaded}
@@ -113,9 +124,12 @@ const QuestionDetails = async ({ params }: RouteParams) => {
         />
       </section>
 
-
       <section className="my-5">
-        <AnswerForm questionId={question._id} />
+        <AnswerForm
+          questionId={question._id}
+          questionTitle={question.title}
+          questionContent={question.content}
+        />
       </section>
     </>
   );
