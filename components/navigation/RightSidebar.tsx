@@ -5,18 +5,19 @@ import React from "react";
 import TagCard from "../cards/TagCard";
 import { getHotQuestions } from "@/lib/actions/question.action";
 import DataRenderer from "../DataRenderer";
-import { getTopTags } from "@/lib/actions/tag.action";
+import { getTags } from "@/lib/actions/tag.action";
 
 const RightSidebar = async () => {
-  const { success, data: hotQuestions, error } = await getHotQuestions();
-  const {
-    success: tagSuccess,
-    data: tags,
-    error: tagError,
-  } = await getTopTags();
+  const [hotQuestionsResponse, tagsResponse] = await Promise.all([
+    getHotQuestions(),
+    getTags(),
+  ]);
+
+  const { success, data: hotQuestions, error } = hotQuestionsResponse;
+  const { success: tagSuccess, data: tags, error: tagError } = tagsResponse;
 
   return (
-    <section className="pt-36 custom-scrollbar background-light900_dark200 light-border sticky right-0 top-0 flex h-screen w-[350px] flex-col gap-6 overflow-y-auto border-l p-6 shadow-light-300 dark:shadow-none max-xl:hidden">
+    <section className="pt-36 custom-scrollbar background-light900_dark200 light-border sticky right-0 top-0 flex h-screen w-87.5 flex-col gap-6 overflow-y-auto border-l p-6 shadow-light-300 dark:shadow-none max-xl:hidden">
       <div>
         <h3 className="h3-bold text-dark200_light900">Top Questions</h3>
 
@@ -29,7 +30,7 @@ const RightSidebar = async () => {
           success={success}
           error={error}
           render={(hotQuestions) => (
-            <div className="mt-7 flex w-full flex-col gap-[30px]">
+            <div className="mt-7 flex w-full flex-col gap-7.5">
               {hotQuestions.map(({ _id, title }) => (
                 <Link
                   key={_id}
